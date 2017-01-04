@@ -18,7 +18,7 @@ export default class HomePage extends Component {
         let selectedTab = this.props.selectedTab ? this.props.selectedTab : FLAG_TAB.flag_indexTab;       // 初次启动的是popularTab
         this.state = {
             selectedTab: selectedTab,
-            theme: this.props.theme     // 获取welcomePage传过来的主题，一般都是默认主题
+            //theme: this.props.theme     // 获取welcomePage传过来的主题，一般都是默认主题
         };
     }
 
@@ -43,7 +43,7 @@ export default class HomePage extends Component {
                         style={[styles.tabBarSelectedIcon]}
                         source={renderIcon}/>}
                     onPress={() => this.onSelected(selectedTab)}>
-                    <Component {...this.props} theme={this.state.theme} homeComponent={this}/>
+                    <Component {...this.props} /*theme={this.state.theme}*/ homeComponent={this}/>
                 </TabNavigator.Item>
             )
     }

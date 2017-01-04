@@ -22,7 +22,7 @@ export default class WelcomePage extends Component {
 //                            theme:this.theme
                         }
                     });
-                }, 1000);
+                }, 1500);
             }
         )
     }

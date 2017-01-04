@@ -1,15 +1,20 @@
 import React, {Component} from 'react';
 import {
-    StyleSheet,Text,Image,View,ScrollView,
+    StyleSheet,Text,Image,View,ScrollView,statusBar,
 } from 'react-native'
 import Swiper from 'react-native-swiper';
+import ScrollableTabView, {DefaultTabBar, ScrollableTabBar} from 'react-native-scrollable-tab-view';
+import CustomTabBar from '../widgets/CustomTabBar';
 import {IMAGE_PATH} from '../utils/Const';
 import GlobalStyles from '../../res/styles/GlobalStyles';
-import VerticalScrollView from '../widgets/VerticalScrollView'
+import VerticalScrollView from '../widgets/VerticalScrollView';
+import NavigationBar from '../widgets/NavigationBar';
 
 export default class IndexPage extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+        };
     }
 
     renderImg(){
@@ -25,16 +30,30 @@ export default class IndexPage extends Component {
         return imageViews;
     }
     render(){
+        var tabNames = ['我要厂房', '我是业主', '经纪人'];
+        var tabIconNames = ['find_selected', 'owner_selected', 'agent_selected'];
+        let navigationBarContent =
+            <View style={styles.search}>
+                <Text style={styles.textLocation}>东莞市</Text>
+                <Image source={require('../../res/images/ic_location_arrow_down.png')}></Image>
+                <View style={styles.searchInput}>
+                    <Image source={{uri:'ic_search'}} style={{width:20, height:20}}></Image>
+                    <Text style={styles.searchText}>请输入搜索关键字</Text>
+                </View>
+            </View>
+        var statusBar={
+            backgroundColor:'#eeeeee',
+        }
+        let navigation =
+            <NavigationBar
+                style={{backgroundColor:'#fff'}}
+                titleView={navigationBarContent}
+                statusBar={statusBar}
+                hide={false}/>;
+
         return(
             <ScrollView>
-                <View style={styles.search}>
-                    <Text style={styles.textLocation}>东莞市</Text>
-                    <Image source={require('../../res/images/ic_location_arrow_down.png')}></Image>
-                    <View style={styles.searchInput}>
-                        <Image source={require('../../res/images/ic_search.png')}></Image>
-                        <Text style={styles.searchText}>请输入搜索关键字</Text>
-                    </View>
-                </View>
+                {navigation}
                 <Swiper height={200} autoplay={true}>
                     {this.renderImg()}
                 </Swiper>
@@ -43,6 +62,22 @@ export default class IndexPage extends Component {
                     <VerticalScrollView></VerticalScrollView>
                 </View>
                 <View style={GlobalStyles.line}></View>
+                <View style={{padding:10}}>
+                <ScrollableTabView
+                    renderTabBar={() => <CustomTabBar tabNames={tabNames} tabIconNames={tabIconNames}/>}>
+                     <View style={styles.content} tabLabel='key1'>
+                         <Text>#1</Text>
+                     </View>
+
+                     <View style={styles.content} tabLabel='key2'>
+                         <Text>#2</Text>
+                     </View>
+
+                     <View style={styles.content} tabLabel='key3'>
+                         <Text>#3</Text>
+                     </View>
+                </ScrollableTabView>
+                </View>
             </ScrollView>
         );
     }
@@ -97,5 +132,10 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         justifyContent:'center',
     },
-
+    content: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#EBEBEB',
+		flex: 1
+	},
 });
