@@ -1,5 +1,6 @@
 package com.example.cwenhui.nestrntoandroid;
 
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 

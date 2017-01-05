@@ -1,20 +1,33 @@
 import React, {Component} from 'react';
 import {
-    StyleSheet,Text,Image,View,ScrollView,statusBar,
+    StyleSheet,Text,Image,View,ScrollView,statusBar,ListView,
 } from 'react-native'
 import Swiper from 'react-native-swiper';
 import ScrollableTabView, {DefaultTabBar, ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import CustomTabBar from '../widgets/CustomTabBar';
-import {IMAGE_PATH} from '../utils/Const';
 import GlobalStyles from '../../res/styles/GlobalStyles';
 import VerticalScrollView from '../widgets/VerticalScrollView';
 import NavigationBar from '../widgets/NavigationBar';
+import FindFactoryPage from './FindFactoryPage';
+import OwnerPage from './OwnerPage';
+import AgencyPage from './AgencyPage';
+import {IMAGE_PATH, BASE_URL} from '../utils/Const';
+import WantedMessageRepository from '../dao/WantedMessageRepository';
+
+const REST_API = 'wantedmessages/home'
+var wantedMessageRepository = new WantedMessageRepository()
 
 export default class IndexPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        };
+            dataSource:new ListView.DataSource({
+                rowHasChanged:(r1,r2)=>r1 !== r2,
+            }),
+        }
+    }
+    componentDidMount() {
+        this.loadData();
     }
 
     renderImg(){
@@ -29,6 +42,32 @@ export default class IndexPage extends Component {
         }
         return imageViews;
     }
+
+    loadData(){
+        wantedMessageRepository.fetchNetRepository(BASE_URL+REST_API)
+            .then((jsons)=>{
+                this.updateState({
+                    dataSource: this.getDataSource(jsons),
+                })
+            }).catch((error)=> {
+                console.warn(error);
+            })
+    }
+    updateState(dic) {
+        if (!this)return;
+        this.setState(dic);
+    }
+
+    getDataSource(items) {
+        return this.state.dataSource.cloneWithRows(items);
+    }
+
+    renderRow(projectModel){
+        return (
+            <Text>{projectModel.factory.title}</Text>
+        );
+    }
+
     render(){
         var tabNames = ['我要厂房', '我是业主', '经纪人'];
         var tabIconNames = ['find_selected', 'owner_selected', 'agent_selected'];
@@ -55,7 +94,7 @@ export default class IndexPage extends Component {
             <ScrollView>
                 {navigation}
                 <Swiper height={200} autoplay={true}>
-                    {this.renderImg()}
+                   {this.renderImg()}
                 </Swiper>
                 <View style={styles.msgOnline}>
                     <Image source={require('../../res/images/ic_msg_online.png')} style={{marginRight:20}}></Image>
@@ -64,23 +103,36 @@ export default class IndexPage extends Component {
                 <View style={GlobalStyles.line}></View>
                 <View style={{padding:10}}>
                 <ScrollableTabView
+                    locked={true}
                     renderTabBar={() => <CustomTabBar tabNames={tabNames} tabIconNames={tabIconNames}/>}>
-                     <View style={styles.content} tabLabel='key1'>
-                         <Text>#1</Text>
+                     <View style={styles.pickRole} tabLabel='key1'>
+                         <FindFactoryPage></FindFactoryPage>
                      </View>
 
-                     <View style={styles.content} tabLabel='key2'>
-                         <Text>#2</Text>
+                     <View style={styles.pickRole} tabLabel='key2'>
+                         <OwnerPage/>
                      </View>
 
-                     <View style={styles.content} tabLabel='key3'>
-                         <Text>#3</Text>
+                     <View style={styles.pickRole} tabLabel='key3'>
+                         <AgencyPage/>
                      </View>
                 </ScrollableTabView>
                 </View>
+                <View style={styles.greateFactory}>
+                   <Image source={{uri:'ic_greate_factory'}} style={{width:25, height:25}}/>
+                   <Text style={{fontSize:13, color:'#1ab80f'}}>优质厂房</Text>
+                </View>
+                <View style={GlobalStyles.line}></View>
+//                <ListView
+//                    showsVerticalScrollIndicator = {false}
+//                    dataSource={this.state.dataSource}
+//                    renderRow={(e)=>this.renderRow(e)}
+//                    />
             </ScrollView>
         );
     }
+
+
 }
 
 const images=[
@@ -132,10 +184,20 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         justifyContent:'center',
     },
-    content: {
+    pickRole: {
 		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#EBEBEB',
-		flex: 1
+		justifyContent: 'flex-start',
+		flexDirection:'row',
+		backgroundColor: 'white',
+		flex: 1,
 	},
+	greateFactory:{
+	    flexDirection:'row',
+	    alignItems:'center',
+	    justifyContent:'flex-start',
+	    paddingLeft:16,
+	    paddingTop:5,
+	    paddingRight:7,
+	    paddingBottom:5,
+	}
 });
