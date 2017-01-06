@@ -20,7 +20,6 @@ export default class AgentPageCell extends Component{
         let item = this.props.projectModel.item? this.props.projectModel.item:this.props.projectModel;
         let imgUri = new Buffer(item.avatar, 'base64').toString();
         let img = {uri:imgUri!==''&&imgUri!==null?imgUri:'boy'}
-        console.log(img);
         return(
             <TouchableHighlight
                 onPress={this.props.onSelect}

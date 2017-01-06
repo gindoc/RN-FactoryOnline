@@ -8,7 +8,10 @@ export default class AgentRepository {
     fetchNetRepository(url) {
         return new Promise((resolve, reject)=> {
             NetUtil.get(url, (responseJson)=>{
-                console.log(responseJson)
+                responseJson.wantedMessage.unshift('')
+                for(var json of responseJson.wantedMessage){
+                    console.log(json);
+                }
                 if(responseJson.erro_code===200){
                     resolve(responseJson.wantedMessage)
                 }
