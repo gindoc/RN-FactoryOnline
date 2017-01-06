@@ -62,7 +62,7 @@ export default class IndexPage extends Component {
         return this.state.dataSource.cloneWithRows(items);
     }
 
-    renderRow(projectModel){
+    renderRow(projectModel, sectionID, rowID){
         return (
             <Text>{projectModel.factory.title}</Text>
         );
@@ -89,49 +89,45 @@ export default class IndexPage extends Component {
                 titleView={navigationBarContent}
                 statusBar={statusBar}
                 hide={false}/>;
-
         return(
-            <ScrollView>
+            <View>
                 {navigation}
-                <Swiper height={200} autoplay={true}>
-                   {this.renderImg()}
-                </Swiper>
-                <View style={styles.msgOnline}>
-                    <Image source={require('../../res/images/ic_msg_online.png')} style={{marginRight:20}}></Image>
-                    <VerticalScrollView></VerticalScrollView>
-                </View>
-                <View style={GlobalStyles.line}></View>
-                <View style={{padding:10}}>
-                <ScrollableTabView
-                    locked={true}
-                    renderTabBar={() => <CustomTabBar tabNames={tabNames} tabIconNames={tabIconNames}/>}>
-                     <View style={styles.pickRole} tabLabel='key1'>
-                         <FindFactoryPage></FindFactoryPage>
-                     </View>
+                <ScrollView>
+                    <Swiper height={200} autoplay={true}>
+                       {this.renderImg()}
+                    </Swiper>
+                    <View style={styles.msgOnline}>
+                        <Image source={require('../../res/images/ic_msg_online.png')} style={{marginRight:20}}></Image>
+                        <VerticalScrollView></VerticalScrollView>
+                    </View>
+                    <View style={GlobalStyles.line}></View>
+                    <View style={{padding:10}}>
+                    <ScrollableTabView
+                        locked={true}
+                        renderTabBar={() => <CustomTabBar tabNames={tabNames} tabIconNames={tabIconNames}/>}>
+                         <View style={styles.pickRole} tabLabel='key1'>
+                             <FindFactoryPage></FindFactoryPage>
+                         </View>
 
-                     <View style={styles.pickRole} tabLabel='key2'>
-                         <OwnerPage/>
-                     </View>
+                         <View style={styles.pickRole} tabLabel='key2'>
+                             <OwnerPage/>
+                         </View>
 
-                     <View style={styles.pickRole} tabLabel='key3'>
-                         <AgencyPage/>
-                     </View>
-                </ScrollableTabView>
-                </View>
-                <View style={styles.greateFactory}>
-                   <Image source={{uri:'ic_greate_factory'}} style={{width:25, height:25}}/>
-                   <Text style={{fontSize:13, color:'#1ab80f'}}>优质厂房</Text>
-                </View>
-                <View style={GlobalStyles.line}></View>
-//                <ListView
-//                    showsVerticalScrollIndicator = {false}
-//                    dataSource={this.state.dataSource}
-//                    renderRow={(e)=>this.renderRow(e)}
-//                    />
-            </ScrollView>
+                         <View style={styles.pickRole} tabLabel='key3'>
+                             <AgencyPage/>
+                         </View>
+                    </ScrollableTabView>
+                    </View>
+                    <View style={styles.greateFactory}>
+                       <Image source={{uri:'ic_greate_factory'}} style={{width:25, height:25}}/>
+                       <Text style={{fontSize:13, color:'#1ab80f'}}>优质厂房</Text>
+                    </View>
+                    <View style={GlobalStyles.line}></View>
+
+                </ScrollView>
+            </View>
         );
     }
-
 
 }
 
