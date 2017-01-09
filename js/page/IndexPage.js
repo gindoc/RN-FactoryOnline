@@ -135,7 +135,11 @@ export default class IndexPage extends Component {
                 <ListView
                     removeClippedSubviews={false}
                     dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}/>
+                    renderRow={this.renderRow}
+                    renderFooter={()=> {
+                        return <View style={{height: 50}}/>
+                    }}
+                    renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}/>
             </View>
         );
     }
@@ -205,5 +209,9 @@ const styles = StyleSheet.create({
 	    paddingLeft:16,
 	    paddingRight:7,
 	    paddingBottom:10,
+	},
+	separator:{
+	    height:0.3,
+	    backgroundColor:'#ccc',
 	}
 });
